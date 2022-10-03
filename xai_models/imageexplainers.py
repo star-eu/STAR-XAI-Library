@@ -2,41 +2,31 @@ import time
 
 import numpy as np
 import tensorflow as tf
+from skimage.segmentation import mark_boundaries
+
 from utils.logger import debug, timing, debug_mem, info
 
 class LIME():
-    def __init__(self, model_path: str,):
+    def __init__(self, model_path: str):
         super().__init__()
         self.model = tf.keras.models.load_model(model_path)
-        # embedding = pd.read_csv(embedding_path)
-        # self.embedding = embedding.reset_index().to_dict('list')
-        # self.type = TransformerType.transform_and_approximate
-        # self.num_of_representative_vectors = num_of_representative_vectors
 
-    def __repr__(self):
-        return f"Signal2Vec num_of_representative_vectors: {self.num_of_representative_vectors}"
+    def explain(self, image_array: np.ndarray, window: int = 1, should_fit: bool = True, GLOBAL_SEED=0) -> list:
+        explainer = self.model.LimeImageExplainer(random_state=GLOBAL_SEED)
+        explanation = explainer.explain_instance(
+            image_array.astype(np.double),
+            self.model.predict,
+            top_labels=3, hide_color=0, num_samples=50
+        )
 
-    # def transform(self, series: np.ndarray, sample_period: int = 6) -> np.ndarray:
-    #     discrete_series = self.discretize_in_chunks(series, sample_period)
-    #     debug_mem('Time series {} MB', series)
-    #     debug_mem('Discrete series {} MB', discrete_series)
-    #
-    #     vector_representation = self.map_into_vectors(discrete_series)
-    #     debug_mem('Sequence of vectors : {} MB', vector_representation)
-    #
-    #     return np.array(vector_representation)
-    #
-    # def approximate(self, data_in_batches: np.ndarray, window: int = 1, should_fit: bool = True) -> list:
-    #     # TODO: Window is used only by signal2vec, move it to constructor or extract it as len(segment).
-    #     if self.num_of_representative_vectors > 1:
-    #         window = int(window / self.num_of_representative_vectors)
-    #         data_in_batches = np.reshape(data_in_batches,
-    #                                      (len(data_in_batches), window, 300 * self.num_of_representative_vectors))
-    #
-    #     squeezed_seq = np.sum(data_in_batches, axis=1)
-    #     vf = np.vectorize(lambda x: x / window)
-    #     squeezed_seq = vf(squeezed_seq)
-    #     return squeezed_seq
+        im, mask = explanation.get_image_and_mask(
+            self.model.predict(
+                image_array[None, :, :, :]
+            ).argmax(axis=1)[0],
+            positive_only=False, hide_rest=False, num_features=50)
+
+        im = mark_boundaries(im, mask)
+        return im
 
     def reconstruct(self, series: np.ndarray) -> list:
         raise Exception('LIME doesn\'t support reconstruct yet.')

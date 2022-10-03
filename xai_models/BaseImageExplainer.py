@@ -9,8 +9,14 @@ import loguru
 import numpy as np
 import pandas as pd
 
+class ExplainerType(Enum):
+    # TODO: More clear TransformerType is needed.
+    raw = 1
+    transform = 2
+    approximate = 3
+    transform_and_approximate = 4
 
-class ImageExplainer(ABC):
+class CaseImageExplainer(ABC):
 
     def __init__(self):
         super().__init__()
