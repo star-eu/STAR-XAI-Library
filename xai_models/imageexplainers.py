@@ -4,10 +4,10 @@ import cv2
 import numpy as np
 import tensorflow as tf
 from skimage.segmentation import mark_boundaries
+from tensorflow.keras.models import Model
 
 from utils.helper_functions import sigmoid
-from utils.logger import debug, timing, debug_mem, info
-from tensorflow.keras.models import Model
+from utils.logger import timing
 
 
 class LIME():
