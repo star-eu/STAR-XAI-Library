@@ -47,8 +47,8 @@ Currently only **Image** data are supported.
 
 ## Project structure
 A detailed structure of the project is presented below. The key points are:
-   - 📂 __data\_exploration__: Contains helpful notebooks e.g. how to define delay embedding parameters.
-   - 📂 __datasources__: Includes modules related to data e.g. loading using nilmtk, processing labels and others. 
+   - 📂 __data\_exploration__: Contains helpful notebooks e.g. explanation of each xai model.
+   - 📂 __datasources__: Includes modules related to data e.g. loading, processing labels and others. 
    - 📂 __experiments__: Defines some experiments such as model selection and has examples on how to run the 
    defined experiments. 
    - 📂 __xai_models__: This is the main code which encapsulates all the logic of the proposed framework 
