@@ -69,8 +69,6 @@ A detailed structure of the project is presented below. The key points are:
      - 📄 [\_\_init\_\_.py](datasources/__init__.py)
    - 📂 __experiments__
    - 📂 __pretrained\_models__
-     - 📄 [clf\-v1.pkl](pretrained_models/clf-v1.pkl)
-     - 📄 [signal2vec\-v1.csv](pretrained_models/signal2vec-v1.csv)
    - 📂 __results__
      - 📄 [\_\_init\_\_.py](results/__init__.py)
    - 📂 __utils__
